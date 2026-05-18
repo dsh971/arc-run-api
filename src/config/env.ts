@@ -8,10 +8,11 @@ const envSchema = z.object({
   PORT: z.string().default('8080'),
   SUPABASE_URL: z.string().url(),
   SUPABASE_ANON_KEY: z.string().min(1),
-  SUPABASE_JWT_SECRET: z.string().min(1),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   DATABASE_URL: z.string().url(),
 })
 
+// Validate at module load — fails fast at boot so a misconfigured deploy is caught immediately, not at first request
 const parsed = envSchema.safeParse(process.env)
 
 if (!parsed.success) {

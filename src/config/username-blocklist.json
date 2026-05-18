@@ -1,0 +1,12 @@
+{
+  "reserved": [
+    "admin", "administrator", "arcrun", "arcrunapp", "arc_run",
+    "support", "help", "helpdesk", "legal", "moderator", "mod",
+    "staff", "official", "team", "bot", "system", "service",
+    "null", "undefined", "root", "superuser", "owner",
+    "developer", "dev", "api", "test", "guest", "anonymous"
+  ],
+  "profanity": [
+    "TODO: add profanity blocklist before public launch"
+  ]
+}

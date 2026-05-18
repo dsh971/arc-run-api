@@ -12,23 +12,19 @@ const usernameBodySchema = z.object({
     .string()
     .min(3, 'Call sign too short — minimum 3 characters')
     .max(20, 'Call sign too long — maximum 20 characters')
-    .regex(/^[a-zA-Z0-9][a-zA-Z0-9_]{1,18}[a-zA-Z0-9]$/, 'Letters, numbers, and underscores only')
-    .refine(val => !/__/.test(val), 'Consecutive underscores are not allowed'),
+    .regex(/^[a-zA-Z0-9_]{3,20}$/, 'Letters, numbers, and underscores only'),
 })
 
-// Public — check availability before user commits to a username
-router.post(
-  '/username/check',
-  validate(z.object({ username: z.string().min(1) })),
-  authController.checkUsername
-)
+// Protected — fetch current user's profile
+router.get('/profile',         authenticate, authController.getProfile)
 
-// Protected — set username after account creation
-router.post(
-  '/username/set',
-  authenticate,
-  validate(usernameBodySchema),
-  authController.setUsername
-)
+// Protected — set username (no uniqueness check — display name only)
+router.post('/username/set',   authenticate, validate(usernameBodySchema), authController.setUsername)
+
+// Protected — age declaration (STORY-058, GDPR Article 8)
+router.post('/age-declaration', authenticate, authController.confirmAgeDeclaration)
+
+// Protected — Health & Safety Briefing + ToS acceptance (STORY-059)
+router.post('/health-briefing', authenticate, authController.confirmHealthBriefing)
 
 export default router
